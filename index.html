@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REDNAX</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Center Content -->
+        <div class="center-content" id="centerContent">
+            <!-- Logo -->
+            <div class="logo-container">
+                <h1 class="logo">REDNAX</h1>
+                <p class="subtitle">Search anything</p>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <div class="search-wrapper">
+                    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        class="search-input" 
+                        placeholder="Search or enter URL"
+                        autocomplete="off"
+                        spellcheck="false"
+                    >
+                    <button id="clearBtn" class="clear-button">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tools (only show when not searching) -->
+            <div class="tools-grid" id="toolsGrid">
+                <button class="tool-card" onclick="showCalculator()">
+                    <div class="tool-icon">🧮</div>
+                    <div class="tool-name">Calculator</div>
+                </button>
+                <button class="tool-card" onclick="showTimer()">
+                    <div class="tool-icon">⏲️</div>
+                    <div class="tool-name">Timer</div>
+                </button>
+                <button class="tool-card" onclick="showStopwatch()">
+                    <div class="tool-icon">⏱️</div>
+                    <div class="tool-name">Stopwatch</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Search Results (hidden by default) -->
+        <div class="results-container" id="resultsContainer">
+            <!-- Mini Search Bar -->
+            <div class="top-bar">
+                <div class="mini-logo">REDNAX</div>
+                <div class="mini-search-wrapper">
+                    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <input 
+                        type="text" 
+                        id="miniSearchInput" 
+                        class="mini-search-input" 
+                        placeholder="Search or enter URL"
+                        autocomplete="off"
+                        spellcheck="false"
+                    >
+                </div>
+                <div class="tools-btn-group">
+                    <button class="mini-tool-btn" onclick="showCalculator()">🧮</button>
+                    <button class="mini-tool-btn" onclick="showTimer()">⏲️</button>
+                    <button class="mini-tool-btn" onclick="showStopwatch()">⏱️</button>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div class="results-content" id="resultsContent"></div>
+            
+            <!-- Loading -->
+            <div class="loading-state" id="loadingState">
+                <div class="loader"></div>
+            </div>
+        </div>
+
+        <!-- Inline Calculator Result -->
+        <div class="inline-calc" id="inlineCalc">
+            <div class="calc-expression" id="calcExpression"></div>
+            <div class="calc-result" id="calcResultValue"></div>
+        </div>
+    </div>
+
+    <!-- Calculator Modal -->
+    <div class="modal" id="calculatorModal">
+        <div class="modal-overlay" onclick="closeCalculator()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Calculator</h2>
+                <button class="modal-close" onclick="closeCalculator()">×</button>
+            </div>
+            <div class="calculator">
+                <input type="text" id="calcDisplay" class="calc-display" readonly>
+                <div class="calc-buttons">
+                    <button onclick="clearCalc()" class="calc-btn clear">C</button>
+                    <button onclick="appendCalc('(')" class="calc-btn operator">(</button>
+                    <button onclick="appendCalc(')')" class="calc-btn operator">)</button>
+                    <button onclick="appendCalc('/')" class="calc-btn operator">÷</button>
+                    
+                    <button onclick="appendCalc('7')" class="calc-btn">7</button>
+                    <button onclick="appendCalc('8')" class="calc-btn">8</button>
+                    <button onclick="appendCalc('9')" class="calc-btn">9</button>
+                    <button onclick="appendCalc('*')" class="calc-btn operator">×</button>
+                    
+                    <button onclick="appendCalc('4')" class="calc-btn">4</button>
+                    <button onclick="appendCalc('5')" class="calc-btn">5</button>
+                    <button onclick="appendCalc('6')" class="calc-btn">6</button>
+                    <button onclick="appendCalc('-')" class="calc-btn operator">−</button>
+                    
+                    <button onclick="appendCalc('1')" class="calc-btn">1</button>
+                    <button onclick="appendCalc('2')" class="calc-btn">2</button>
+                    <button onclick="appendCalc('3')" class="calc-btn">3</button>
+                    <button onclick="appendCalc('+')" class="calc-btn operator">+</button>
+                    
+                    <button onclick="appendCalc('0')" class="calc-btn zero">0</button>
+                    <button onclick="appendCalc('.')" class="calc-btn">.</button>
+                    <button onclick="calculateResult()" class="calc-btn equals">=</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Timer Modal -->
+    <div class="modal" id="timerModal">
+        <div class="modal-overlay" onclick="closeTimer()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Timer</h2>
+                <button class="modal-close" onclick="closeTimer()">×</button>
+            </div>
+            <div class="timer-container">
+                <div class="time-setter">
+                    <div class="time-unit">
+                        <input type="number" id="hours" min="0" max="23" value="0">
+                        <label>hours</label>
+                    </div>
+                    <span class="time-separator">:</span>
+                    <div class="time-unit">
+                        <input type="number" id="minutes" min="0" max="59" value="5">
+                        <label>min</label>
+                    </div>
+                    <span class="time-separator">:</span>
+                    <div class="time-unit">
+                        <input type="number" id="seconds" min="0" max="59" value="0">
+                        <label>sec</label>
+                    </div>
+                </div>
+                <div class="timer-display" id="timerDisplay">00:05:00</div>
+                <div class="timer-controls">
+                    <button onclick="startTimer()" class="ctrl-btn primary">Start</button>
+                    <button onclick="pauseTimer()" class="ctrl-btn">Pause</button>
+                    <button onclick="resetTimer()" class="ctrl-btn">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stopwatch Modal -->
+    <div class="modal" id="stopwatchModal">
+        <div class="modal-overlay" onclick="closeStopwatch()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Stopwatch</h2>
+                <button class="modal-close" onclick="closeStopwatch()">×</button>
+            </div>
+            <div class="stopwatch-container">
+                <div class="stopwatch-display" id="stopwatchDisplay">00:00:00</div>
+                <div class="stopwatch-controls">
+                    <button onclick="startStopwatch()" class="ctrl-btn primary">Start</button>
+                    <button onclick="pauseStopwatch()" class="ctrl-btn">Pause</button>
+                    <button onclick="resetStopwatch()" class="ctrl-btn">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "rednax-search-engine",
+  "version": "1.0.0",
+  "description": "REDNAX - Advanced Search Engine with Calculator and Timer",
+  "main": "index.html",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "search",
+    "engine",
+    "calculator",
+    "timer",
+    "web",
+    "crawler"
+  ],
+  "author": "Albarr",
+  "license": "MIT"
+}
